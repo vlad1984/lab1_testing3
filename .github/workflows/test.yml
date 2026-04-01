@@ -70,7 +70,7 @@ jobs:
             echo "No log file found"
           fi
 
-      - name: Upload artifact (logs + graphs + commit info)
+      - name: Upload artifact 
         uses: actions/upload-artifact@v4
         with:
           name: ci-report
