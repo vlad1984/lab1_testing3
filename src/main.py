@@ -3,7 +3,7 @@ from my_logger import log
 from pypdf import PdfReader
 
 # TODO - (INPUT) receive variable input  
-folder_path = "../lab_sub/"
+folder_path = "lab_sub/"
 file_names = [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))]
 file_names = [f for f in file_names if f.rsplit('.')[-1].lower() == 'pdf']
 
