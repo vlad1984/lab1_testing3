@@ -1,0 +1,79 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Create report directories
+        run: |
+          mkdir -p logs
+          mkdir -p reports
+
+      - name: Run Code
+        run: |
+          export PYTHONPATH=src
+          python3 src/main.py
+
+      - name: Collect Git commit information
+        run: |
+          echo "Git Commit History Report" > reports/commit_info.txt
+          echo "=========================" >> reports/commit_info.txt
+          echo "" >> reports/commit_info.txt
+
+          echo "Repository:" >> reports/commit_info.txt
+          echo "${GITHUB_REPOSITORY}" >> reports/commit_info.txt
+          echo "" >> reports/commit_info.txt
+
+          echo "GitHub User:" >> reports/commit_info.txt
+          echo "${GITHUB_ACTOR}" >> reports/commit_info.txt
+          echo "" >> reports/commit_info.txt
+
+          echo "Total commits:" >> reports/commit_info.txt
+          git rev-list --count HEAD >> reports/commit_info.txt
+          echo "" >> reports/commit_info.txt
+
+          echo "Commit History (oldest -> newest):" >> reports/commit_info.txt
+          echo "" >> reports/commit_info.txt
+          git log --reverse --pretty=format:"%H %s" >> reports/commit_info.txt
+
+      - name: Show generated files
+        run: |
+          echo "---- LOG FILES ----"
+          ls -l logs || echo "No logs folder"
+
+          echo "---- REPORT FILES ----"
+          ls -l reports || echo "No reports folder"
+
+      - name: Show log output
+        run: |
+          if [ -f logs/lab1_test3.log ]; then
+            echo "---- LOG OUTPUT ----"
+            cat logs/lab1_test3.log
+          else
+            echo "No log file found"
+          fi
+
+      - name: Upload artifact (logs + graphs + commit info)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-report
+          path: |
+            logs/
+            reports/commit_info.txt
