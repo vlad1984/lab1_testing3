@@ -15,7 +15,7 @@ for fn in file_names:
   for i in range(num_pages):
     pge = reader.pages[i]
     t = pge.extract_text()
-    txt += t or ""
+    if t: txt += t
 
   # TODO - (PROCESS) each lab 'matched' lab
   file_prefix = fn.rsplit('.')[0].lower()
@@ -26,8 +26,11 @@ for fn in file_names:
       q1 = q1.replace('\n',' ')
       q1 = q1.lower()
       check_flag = all(word in q1 for word in ["input", "process", "output"])      
-      
-      if check_flag:  log.error("expecting mention of input/process/output")
-      else:           log.info("q1, passed")
+
+      if check_flag:  log.info("q1, passed")
+      else:  
+        log.error("expecting mention of input/process/output")
+        failed = True
+        
     case _:  
       log.error(f"{file_prefix} does not exist")
