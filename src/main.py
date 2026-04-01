@@ -19,7 +19,7 @@ for fn in file_names:
   # TODO - (PROCESS) each lab 'matched' lab
   file_prefix = fn.rsplit('.')[0].lower()
   match file_prefix:  
-    case "lab1_test2":
+    case "sample_report":
       q1,num_split,rest = txt.partition('2.')
       
       q1 = q1.replace('\n',' ')
