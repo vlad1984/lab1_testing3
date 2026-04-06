@@ -18,10 +18,10 @@ for fn in file_names:
     t = pge.extract_text()
     if t: txt += t
 
-  # TODO - (PROCESS) each lab 'matched' lab
+  # TODO - (PROCESS) each lab with a 'matched' file name
   file_prefix = Path(fn).stem.lower()  
   match file_prefix: 
-    case "sample_report":
+    case "sample_report":  #i.e., sample_report.PDF is the file name
       q1,num_split,rest = txt.partition('2.')
       
       q1 = q1.replace('\n',' ')
