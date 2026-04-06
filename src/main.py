@@ -28,7 +28,7 @@ for fn in file_names:
       q1 = q1.lower()
       check_flag = all(word in q1 for word in ["input", "process", "output"])      
   
-      if check_flag:  log.info(f"{sample_report}: q1, passed")
+      if check_flag:  log.info(f"{file_prefix}: q1, passed")
       else:  
         log.error("expecting mention of input/process/output")
         failed = True
